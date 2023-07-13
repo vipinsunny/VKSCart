@@ -9,6 +9,7 @@ import { orderCompleted } from "../../slices/cartSlice";
 import {validateShipping} from '../cart/Shipping';
 import {createOrder} from '../../actions/orderActions'
 import { clearError as clearOrderError } from "../../slices/orderSlice";
+import api from "../../apiConfig"
 
 export default function Payment() {
     const stripe = useStripe();
@@ -65,7 +66,7 @@ export default function Payment() {
         e.preventDefault();
         document.querySelector('#pay_btn').disabled = true;
         try {
-            const {data} = await axios.post('/api/v1/payment/process', paymentData)
+            const {data} = await api.post('/api/v1/payment/process', paymentData)
             const clientSecret = data.client_secret
             const result = await stripe.confirmCardPayment(clientSecret, {
                 payment_method: {
